@@ -1,1 +1,1 @@
-node --test --test-concurrency=1 --test-reporter=spec "tests/smoke/**/*.test.mjs" "tests/acceptance/**/*.test.mjs"
+node --test --test-concurrency=1 --test-reporter=spec "tests/smoke/**/*.test.mjs" "tests/acceptance/**/*.test.mjs" "tests/e2e/**/*.test.mjs"

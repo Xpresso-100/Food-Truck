@@ -132,3 +132,38 @@
   stock.html shows `#order-confirmation[data-order-id]`, and stock.html carries `a#nav-history`
   for every role.
 - Verifier: tests/security, and an independent check against SPEC.
+
+## 2026-10-06 - E2E node, AC7 (done)
+
+**What was done**
+- `tests/e2e/truck-smoke.test.mjs` starts the real app (php -S on a free port, using the G1 harness).
+  - Suite 1, HTTP API: truck1 logs in, then views stock (6 items, the default statuses), then
+    sees products at R0 with cost. It places the worked-example order: 201, R0 lines, cost_total
+    585.1, no FinCon call. The order is first in GET /api/orders and in GET /api/orders/{id}.
+    truck2 gets 404 and does not see it in its list. The HQ pending inbox lists it.
+  - Suite 2, headless browser at 375x667 (mobile emulation, touch, real mouse and keyboard input):
+    - a logged-out visit to /stock.html goes to /
+    - a wrong password shows #login-error
+    - the login goes to /stock.html, where 6 cards carry data-status
+    - typing quantities and tapping #place-order gives #order-confirmation[data-order-id]
+      showing R585.10, and the server stored that order with R0 lines
+    - a#nav-history shows the order first, pending, with "2 lines", R585.10 and a date
+    - logout returns 401 from /api/me
+    - hq1 sees the order with its next-status buttons
+    - every page (/, stock, history, hq) has scrollWidth <= 375
+    - the run has no uncaught JS errors
+- `tests/e2e/support/browser.mjs`: a zero-dependency CDP driver for a browser that is already installed.
+- `.pipeline/test-cmd.txt` now also runs `tests/e2e/**/*.test.mjs`.
+- Logged decisions E-01 and E-02. No product bugs were found, and no product code was changed.
+
+**Evidence**
+- The full test command exits 0: 107 tests, 107 pass, 0 fail, 0 skipped. Local Chrome was used.
+- Mutation check: adding `.card{width:360px;margin-left:40px}` to app.css made the browser test
+  fail. The file was then restored.
+- With E2E_BROWSER=none, the browser suite is skipped with its reason, and the API suite passes.
+- One test-side fix: the page submits lines in on-screen order (category, then sku), so the
+  stored-line check compares by sku.
+
+**Next**
+- Verifier: tests/security, and an independent check against SPEC.
+- On a CI host with no browser, set E2E_BROWSER, or accept the reported skip.
