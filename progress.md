@@ -167,3 +167,8 @@
 **Next**
 - Verifier: tests/security, and an independent check against SPEC.
 - On a CI host with no browser, set E2E_BROWSER, or accept the reported skip.
+
+## 2026-10-06 - VERIFY node (done)
+- Re-ran full test command: 107 pass, 0 fail, 0 skipped. Checked AC1-AC7, locked rules, pricing, secrets scan, npm audit (0 vulns). No product code changed, no tests/security needed (every rule already tested).
+- Verdict SHIP written to .run/VERDICT.md. Non-blocking: `npm test` script omits tests/e2e.
+- Next: human review and deploy (pipeline script does the push).
