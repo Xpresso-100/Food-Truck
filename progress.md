@@ -172,3 +172,8 @@
 - Re-ran full test command: 107 pass, 0 fail, 0 skipped. Checked AC1-AC7, locked rules, pricing, secrets scan, npm audit (0 vulns). No product code changed, no tests/security needed (every rule already tested).
 - Verdict SHIP written to .run/VERDICT.md. Non-blocking: `npm test` script omits tests/e2e.
 - Next: human review and deploy (pipeline script does the push).
+
+## 2026-10-06 - PACKAGE node (done)
+- deploy/bundle (public/ + src/ + config.local.php.example, 27 files, no secrets), deploy/MANIFEST.txt (byte sizes), deploy/sql/01-schema.sql + 02-first-data.sql (placeholders), deploy/tools/make-hash.php, deploy/build.ps1, deploy/DEPLOY.md (upload steps, every env var, 3 post-upload checks).
+- Proof: bundle served with php -S on its own public/ dir: GET /api.php?route=/health -> 200 {"ok":true}. Full test suite not re-run (no product code changed).
+- Next: human fills config.local.php and 02-first-data.sql, uploads, runs the 3 checks. Unverified: live PHP version, mod_rewrite.

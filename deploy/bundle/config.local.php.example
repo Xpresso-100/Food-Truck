@@ -1,0 +1,23 @@
+<?php
+// Food Truck server settings. PLACEHOLDERS ONLY in this example file.
+// The real file is named config.local.php, sits in the app folder next to public/ and src/
+// (NOT inside public/), and is never committed or emailed in plain text.
+// Every value is described in DEPLOY.md section 3.
+return [
+    'APP_ENV'                 => 'production',
+    'DB_DSN'                  => 'mysql:host=localhost;dbname=REPLACE_WITH_DATABASE_NAME;charset=utf8mb4',
+    'DB_USER'                 => 'REPLACE_WITH_DATABASE_USER',
+    'DB_PASS'                 => 'REPLACE_WITH_DATABASE_PASSWORD',
+    'SESSION_COOKIE_SECURE'   => '1',
+    'FINCON_ADAPTER'          => 'tunnel',
+    'FINCON_BASE_URL'         => 'REPLACE_WITH_FINCON_TUNNEL_URL',
+    'FINCON_CF_CLIENT_ID'     => 'REPLACE_WITH_CLOUDFLARE_CLIENT_ID',
+    'FINCON_CF_CLIENT_SECRET' => 'REPLACE_WITH_CLOUDFLARE_CLIENT_SECRET',
+    'FINCON_SRV_USER'         => 'REPLACE_WITH_FINCON_SERVER_USER',
+    'FINCON_SRV_PASS'         => 'REPLACE_WITH_FINCON_SERVER_PASSWORD',
+    'FINCON_DATA_ID'          => 'REPLACE_WITH_FINCON_DATA_ID',
+    'FINCON_USER'             => 'REPLACE_WITH_FINCON_LOGIN_USER',
+    'FINCON_PASS'             => 'REPLACE_WITH_FINCON_LOGIN_PASSWORD',
+    'STOCK_CACHE_TTL_SECONDS' => '900',
+    'STOCK_THRESHOLD_LOW'     => '10',
+];

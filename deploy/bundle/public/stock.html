@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stock - Xpresso Food Truck</title>
+  <link rel="stylesheet" href="/assets/app.css">
+  <script src="/assets/app.js" defer></script>
+  <script src="/assets/stock.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="who">Stock</h1>
+    <a id="nav-history" href="/history.html">History</a>
+    <a id="nav-hq" href="/hq.html" hidden>Orders</a>
+    <button id="logout" type="button" class="secondary">Sign out</button>
+  </header>
+  <main>
+    <p id="stock-source" class="muted" aria-live="polite"></p>
+    <div id="stock-error" class="notice error" role="alert"></div>
+    <form id="order-form" novalidate>
+      <div id="stock-list" aria-busy="true"></div>
+      <div id="order-panel" hidden>
+        <label for="order-note">Note for HQ (optional)</label>
+        <textarea id="order-note" maxlength="500" rows="2"></textarea>
+        <div id="order-error" class="notice error" role="alert"></div>
+        <div id="order-confirmation" class="notice ok" role="status" hidden></div>
+        <div class="order-bar">
+          <button id="place-order" type="submit" class="block">Place order</button>
+        </div>
+      </div>
+    </form>
+  </main>
+</body>
+</html>
