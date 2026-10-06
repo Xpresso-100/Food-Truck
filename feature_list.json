@@ -1,0 +1,142 @@
+[
+  {
+    "id": "S01",
+    "module": "scaffold",
+    "title": "Project skeleton, config from env, PDO factory, migrate + test seed, health route",
+    "acceptance": "php bin/migrate.php then php bin/seed.php test create the SPEC section 2 schema and section 6 fixtures on a fresh SQLite DB_DSN; seed exits 1 with no writes when APP_ENV=production; GET /api/health returns 200 {\"ok\":true}; .gitignore ignores .env, node_modules/, .run/, *.sqlite",
+    "passes": false
+  },
+  {
+    "id": "S02",
+    "module": "scaffold",
+    "title": "Front controller, router, error envelope, route table with 501 module stubs",
+    "acceptance": "All 11 routes in SPEC 4.3 resolve (stubs return 501 not_implemented); unknown /api path returns 404 not_found; wrong method returns 405; non-JSON body on a JSON POST returns 415; every API response has Content-Type application/json and Cache-Control no-store; /api.php?route=/health equals /api/health",
+    "passes": false
+  },
+  {
+    "id": "S03",
+    "module": "scaffold",
+    "title": "Session auth: login, logout, me, role = location type, require_role",
+    "acceptance": "POST /api/login truck1 returns 200 user.role=truck location.id=2 and sets TRUCKSESSID HttpOnly SameSite=Strict; wrong password, unknown user and truck_off all return identical 401 invalid_credentials; missing field returns 422; GET /api/me returns 401 after POST /api/logout (204); body location_id/role never changes identity",
+    "passes": false
+  },
+  {
+    "id": "S04",
+    "module": "scaffold",
+    "title": "FinCon read interface, mock adapter with JSON-lines call log, tunnel adapter from env",
+    "acceptance": "Mock serves SPEC section 6 default quantities, honours FINCON_MOCK_STOCK (re-read per call, {\"fail\":true} = unreachable) and logs every call to FINCON_MOCK_LOG with kind read; tunnel adapter reads all FINCON_* settings from env only, calls only Login/GetStockQuantitiesForOpt2/Logout, always logs out, returns typed failures, never throws; interface declares no write-like method",
+    "passes": false
+  },
+  {
+    "id": "S05",
+    "module": "scaffold",
+    "title": "Acceptance tests, smoke test, test command, create-user CLI, .env.example",
+    "acceptance": "tests/acceptance covers AC1-AC6 black-box via SPEC section 6 harness; tests/smoke passes; .pipeline/test-cmd.txt is one line that runs smoke + acceptance and exits non-zero on failure; bin/create-user.php creates a bcrypt user reading the password from STDIN; .env.example lists every SPEC section 7 variable with placeholders only",
+    "passes": false
+  },
+  {
+    "id": "M1-01",
+    "module": "M1-ordering",
+    "title": "Mobile login page",
+    "acceptance": "GET / serves form#login-form with input#username, input#password, button#login-submit, #login-error and the viewport meta; successful login navigates hq users to /hq.html and others to /stock.html; failed login shows text in #login-error",
+    "passes": false
+  },
+  {
+    "id": "M1-02",
+    "module": "M1-ordering",
+    "title": "GET /api/stock - read-only FinCon stock status view",
+    "acceptance": "As truck1 with default mock: HOT011 in_stock, DAI006 low_stock, PKD010 out_of_stock, PKD020 and PKD021 in_stock (shared code), SYR001 in_stock, PKD034 absent; items carry exactly sku,name,category,unit,status; sorted by category then sku; franchise1 and hq1 get 200 with same statuses; unauthenticated 401",
+    "passes": false
+  },
+  {
+    "id": "M1-03",
+    "module": "M1-ordering",
+    "title": "Stock cache and fail-open",
+    "acceptance": "With FINCON_MOCK_STOCK {\"fail\":true} and no cache, GET /api/stock returns 200 source unavailable and every item in_stock; with STOCK_CACHE_TTL_SECONDS>0 a second call within TTL returns source cache and adds no mock log lines; FinCon ItemNos not requested are never stored",
+    "passes": false
+  },
+  {
+    "id": "M1-04",
+    "module": "M1-ordering",
+    "title": "GET /api/products - role-aware pricing",
+    "acceptance": "truck1 and hq1 get items with unit_price 0 and unit_cost equal to fixture cost (HOT011 210.5); franchise1 gets exactly sku,name,category,unit,moq,price with price = franchise price (HOT011 285) and no cost or truck-price key or cost value anywhere in the body; inactive PKD034 absent",
+    "passes": false
+  },
+  {
+    "id": "M1-05",
+    "module": "M1-ordering",
+    "title": "POST /api/orders - truck order at R0 with cost stored",
+    "acceptance": "truck1 posting HOT011 x2 + DAI006 x6 gets 201 with unit_cost 210.5/27.35, line_cost 421/164.1, cost_total 585.1 and every unit_price, line_total, subtotal, vat_amount, total equal 0; location is 2 even if body says location_id 4; body unit_price/unit_cost ignored; makes zero FinCon mock calls",
+    "passes": false
+  },
+  {
+    "id": "M1-06",
+    "module": "M1-ordering",
+    "title": "Order validation and role guard",
+    "acceptance": "422 for missing/empty/non-array lines, >50 lines, unknown or inactive sku, qty 0, -1, 1000, 2.5 or \"2\", duplicate sku, note over 500 chars; nothing is written on 422; franchise1 and hq1 get 403; unauthenticated gets 401; non-JSON content type gets 415",
+    "passes": false
+  },
+  {
+    "id": "M1-07",
+    "module": "M1-ordering",
+    "title": "Stock page with truck order form (mobile)",
+    "acceptance": "/stock.html lists #stock-list items with data-sku and data-status; truck sees input[data-qty-for] per sku and button#place-order, success shows #order-confirmation[data-order-id]; franchise sees no qty inputs, no place-order button and no cost; a#nav-history and button#logout present; logged-out visit redirects to /",
+    "passes": false
+  },
+  {
+    "id": "M1-08",
+    "module": "M1-ordering",
+    "title": "HQ inbox: GET /api/hq/orders",
+    "acceptance": "hq1 sees orders from truck1 and truck2, newest first, with full order objects including cost; ?status=pending filters; ?status=bogus returns 422; truck1 and franchise1 get 403; unauthenticated 401",
+    "passes": false
+  },
+  {
+    "id": "M1-09",
+    "module": "M1-ordering",
+    "title": "HQ status update: POST /api/hq/orders/{id}/status",
+    "acceptance": "hq1 moves pending -> in_process (200, status_updated_at set) and may skip forward to delivered; same or backward status returns 409 invalid_transition; invalid value 422; unknown id 404; truck1 and franchise1 403; zero FinCon mock calls",
+    "passes": false
+  },
+  {
+    "id": "M1-10",
+    "module": "M1-ordering",
+    "title": "HQ inbox page (mobile)",
+    "acceptance": "/hq.html lists #hq-orders entries with data-order-id and button[data-next-status] for each allowed next status; clicking one updates the status shown; button#logout present",
+    "passes": false
+  },
+  {
+    "id": "M1-11",
+    "module": "M1-ordering",
+    "title": "Phone-width CSS and pages",
+    "acceptance": "/, /stock.html and /hq.html contain the viewport meta and link /assets/app.css; no CSS under /assets has width or min-width above 360px; app.css has min-height >= 44px; no <table> on any page",
+    "passes": false
+  },
+  {
+    "id": "M1-12",
+    "module": "M1-ordering",
+    "title": "Catalogue CSV import CLI",
+    "acceptance": "php bin/import-products.php <csv> with header sku,name,category,unit,moq,franchise_price,cost_price,fincon_item_no,active upserts by sku in one transaction; any invalid row exits non-zero and writes nothing; prints inserted/updated counts; existing order lines keep their cost snapshot after a cost change",
+    "passes": false
+  },
+  {
+    "id": "M2-01",
+    "module": "M2-history",
+    "title": "GET /api/orders - own location history",
+    "acceptance": "truck1 sees only location 2 orders, newest first, max 50, each with lines, R0 prices and cost values; truck2's orders never appear even with ?location_id=4; franchise1 and hq1 get 403; unauthenticated 401",
+    "passes": false
+  },
+  {
+    "id": "M2-02",
+    "module": "M2-history",
+    "title": "GET /api/orders/{id} - single order, cross-location 404",
+    "acceptance": "truck1 reading its own order gets 200 with the same values as at creation; reading truck2's order, a missing id, 0, -1 or abc gets 404 not_found with identical body; franchise1 and hq1 get 403",
+    "passes": false
+  },
+  {
+    "id": "M2-03",
+    "module": "M2-history",
+    "title": "Order history page (mobile)",
+    "acceptance": "/history.html shows #history-list with one [data-order-id] element per order showing status, created date, line count and cost total; contains viewport meta, links /assets/app.css, no <table>; a#nav-stock and button#logout present; logged-out visit redirects to /",
+    "passes": false
+  }
+]
