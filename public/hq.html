@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Truck orders - Xpresso HQ</title>
+  <link rel="stylesheet" href="/assets/app.css">
+  <script src="/assets/app.js" defer></script>
+  <script src="/assets/hq.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="who">Truck orders</h1>
+    <a id="nav-stock" href="/stock.html">Stock</a>
+    <button id="logout" type="button" class="secondary">Sign out</button>
+  </header>
+  <main>
+    <label for="hq-filter">Show</label>
+    <select id="hq-filter">
+      <option value="">All orders</option>
+      <option value="pending">Pending</option>
+      <option value="in_process">In process</option>
+      <option value="out_for_delivery">Out for delivery</option>
+      <option value="delivered">Delivered</option>
+    </select>
+    <div id="hq-error" class="notice error" role="alert"></div>
+    <div id="hq-orders" aria-busy="true" aria-live="polite"></div>
+  </main>
+</body>
+</html>
