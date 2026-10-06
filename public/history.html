@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Order history - Xpresso Food Truck</title>
+  <link rel="stylesheet" href="/assets/app.css">
+  <script src="/assets/app.js" defer></script>
+  <script src="/assets/history.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <h1 id="who">Order history</h1>
+    <a id="nav-stock" href="/stock.html">Stock</a>
+    <button id="logout" type="button" class="secondary">Sign out</button>
+  </header>
+  <main>
+    <h2>Your orders from HQ</h2>
+    <div id="history-error" class="notice error" role="alert"></div>
+    <div id="history-list" aria-busy="true" aria-live="polite"></div>
+  </main>
+</body>
+</html>
