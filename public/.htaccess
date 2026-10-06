@@ -1,0 +1,29 @@
+# Food Truck - Apache config for the web root (public/). Shared, frozen after G1.
+# The domain or subdomain DocumentRoot must point at this folder: pages use absolute
+# /api and /assets paths.
+
+Options -Indexes
+DirectoryIndex index.html
+
+# /api/<path> -> api.php?route=/<path>. If mod_rewrite is off, /api.php?route=/<path> still works.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^api/(.*)$ api.php?route=/$1 [QSA,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "same-origin"
+</IfModule>
+
+# Deny dotfiles, the php -S router, SQL, logs, text and SQLite files.
+<FilesMatch "(^\.|^router\.php$|\.(sql|log|txt|sqlite|md)$)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>

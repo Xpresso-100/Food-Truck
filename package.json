@@ -1,0 +1,13 @@
+{
+  "name": "food-truck",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Xpresso Food Truck - phase 1 stock ordering from HQ. PHP app; Node is used only to run the black-box tests.",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "test": "node --test --test-concurrency=1 --test-reporter=spec \"tests/smoke/**/*.test.mjs\" \"tests/acceptance/**/*.test.mjs\""
+  }
+}

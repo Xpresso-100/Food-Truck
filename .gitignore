@@ -1,2 +1,21 @@
-
 .run/
+
+# Secrets and local config (never committed)
+.env
+.env.*
+!.env.example
+config.local.php
+
+# Dependencies and build output
+node_modules/
+build/
+dist/
+coverage/
+
+# Runtime data
+var/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.log
