@@ -94,3 +94,41 @@
 - Production locations (HQ and the truck) need rows in `locations` before
   `bin/create-user.php` can be used. G5 should supply the SQL in deploy/DEPLOY.md.
 - Whether SetEnv works on xneelo is [UNVERIFIED]. config.local.php is the fallback (G1-02).
+
+## 2026-10-06 - G2 BUILD, MODULE=all (done)
+
+**What was done**
+- M1-ordering, all inside the SPEC §1 M1 file list:
+  - src/Stock.php (R5): status rules, shared-code rule, stock_cache with TTL, fail-open and the
+    48h fallback, unrequested ItemNos dropped
+  - src/Products.php (R6): the franchise branch never selects the cost column
+  - src/OrderView.php: the SPEC 4.2 serializer and ORDER_STATUSES. Scoped by location for trucks,
+    all truck locations for HQ
+  - src/OrdersCreate.php (R7): validation, cost snapshot, one transaction, no FinCon call
+  - src/Hq.php (R8, R9): status filter, forward-only status with a status-guarded UPDATE
+  - public/index.html, stock.html, hq.html, assets/app.css, app.js, stock.js, hq.js
+  - bin/import-products.php
+- M2-history: src/OrdersRead.php (R10, R11), public/history.html, assets/history.js
+- Logged decisions B-01 to B-05 in DECISIONS-LOG.md.
+- No shared file was edited. No LANE BREACH.
+- feature_list.json `passes` flags are untouched. The pipeline decides.
+
+**Evidence**
+- The full test command (.pipeline/test-cmd.txt) exits 0: 105 tests, 105 pass, 0 fail.
+- php -l is clean on src/*.php and bin/*.php. node --check is clean on public/assets/*.js.
+- I ran the importer by hand on a temp DB:
+  - an invalid CSV printed 3 errors, exited 1 and wrote nothing
+  - a valid CSV (Excel BOM, quoted comma, empty fincon_item_no) printed "inserted 1, updated 1"
+  - an existing order line kept unit_cost_cents 21050 after HOT011's cost changed to 215.00
+
+**Not verified**
+- No real-browser check at 375x667. The Playwright tools were not permitted in this run.
+- So the page JS (login redirect, placing an order, the HQ buttons, rendering history) has
+  passed only node --check and the static AC5 rules. It has not been executed in a browser.
+  The E2E node (AC7) should drive it.
+
+**Next**
+- E2E node: tests/e2e for AC7. Use the element contract in SPEC 4.4. After a successful order,
+  stock.html shows `#order-confirmation[data-order-id]`, and stock.html carries `a#nav-history`
+  for every role.
+- Verifier: tests/security, and an independent check against SPEC.
