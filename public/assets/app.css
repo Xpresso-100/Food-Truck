@@ -1,0 +1,230 @@
+/* Food Truck - the only stylesheet. Mobile-first (SPEC 4.4).
+   Phone-width rules: no width or min-width above 360px anywhere; desktop layouts are
+   contained with max-width. Tap targets are at least 44px high. Lists are cards, never tables. */
+
+:root {
+  --brand: #4a2c1d;
+  --brand-dark: #2f1b11;
+  --accent: #c8102e;
+  --bg: #f6f2ee;
+  --card: #ffffff;
+  --text: #1f1a17;
+  --muted: #6b625c;
+  --line: #e2d9d1;
+  --ok: #1e7b3c;
+  --ok-bg: #e3f4e8;
+  --low: #8a5a00;
+  --low-bg: #fff1d6;
+  --out: #a1121f;
+  --out-bg: #fde4e6;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--bg);
+}
+
+img, svg { max-width: 100%; }
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--brand);
+  color: #fff;
+}
+
+.topbar h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 1.1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar a {
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.5rem;
+}
+
+main {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto;
+  padding: 0.75rem;
+}
+
+h2 { font-size: 1.05rem; margin: 1rem 0 0.5rem; }
+
+.muted { color: var(--muted); font-size: 0.9rem; }
+
+button,
+.button {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--brand);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled { opacity: 0.6; cursor: default; }
+
+button.secondary {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+button.block { display: block; width: 100%; }
+
+input,
+select,
+textarea {
+  min-height: 44px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  font: inherit;
+  color: inherit;
+}
+
+textarea { resize: vertical; }
+
+label { display: block; margin: 0.75rem 0 0.25rem; font-weight: 600; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.card-title { font-weight: 600; overflow-wrap: anywhere; }
+
+.category {
+  margin: 1rem 0 0.4rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.status {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  background: var(--line);
+}
+
+.status[data-status="in_stock"] { background: var(--ok-bg); color: var(--ok); }
+.status[data-status="low_stock"] { background: var(--low-bg); color: var(--low); }
+.status[data-status="out_of_stock"] { background: var(--out-bg); color: var(--out); }
+.status[data-status="pending"] { background: var(--low-bg); color: var(--low); }
+.status[data-status="in_process"] { background: #e4ecfb; color: #1d4c9c; }
+.status[data-status="out_for_delivery"] { background: #efe4fb; color: #5b2a91; }
+.status[data-status="delivered"] { background: var(--ok-bg); color: var(--ok); }
+
+.qty {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.qty label { margin: 0; }
+
+.qty input { max-width: 7rem; text-align: center; }
+
+.order-bar {
+  position: sticky;
+  bottom: 0;
+  padding: 0.75rem 0;
+  background: linear-gradient(rgba(246, 242, 238, 0), var(--bg) 30%);
+}
+
+.notice {
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  margin: 0.5rem 0;
+}
+
+.notice:empty { display: none; }
+
+.notice.error { background: var(--out-bg); color: var(--out); }
+.notice.ok { background: var(--ok-bg); color: var(--ok); }
+.notice.info { background: var(--low-bg); color: var(--low); }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.actions button { flex: 1 1 auto; }
+
+details summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.lines { list-style: none; margin: 0; padding: 0; }
+
+.lines li {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-top: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+
+.login {
+  max-width: 24rem;
+  margin: 2rem auto;
+}
+
+.login h1 { color: var(--brand); text-align: center; }
+
+[hidden] { display: none !important; }
